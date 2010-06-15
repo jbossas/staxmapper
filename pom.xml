@@ -5,8 +5,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.jboss</groupId>
-    <artifactId>jboss-config-mapper</artifactId>
+    <artifactId>staxmapper</artifactId>
     <version>1.0.0.Beta1-SNAPSHOT</version>
 
-    
+    <name>StAX Mapper</name>
+
 </project>
