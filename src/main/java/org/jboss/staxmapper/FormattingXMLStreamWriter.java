@@ -38,7 +38,6 @@ final class FormattingXMLStreamWriter implements XMLStreamWriter, XMLStreamConst
     private final XMLStreamWriter delegate;
     private int level;
     private int state = START_DOCUMENT;
-    private final StringBuilder buf = new StringBuilder();
 
     public FormattingXMLStreamWriter(final XMLStreamWriter delegate) {
         this.delegate = delegate;
