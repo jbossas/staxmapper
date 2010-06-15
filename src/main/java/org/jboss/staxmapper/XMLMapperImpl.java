@@ -56,7 +56,7 @@ final class XMLMapperImpl implements XMLMapper {
             reader.require(START_DOCUMENT, null, null);
             reader.nextTag();
             reader.require(START_ELEMENT, null, null);
-            processNested(new MappingReaderImpl(this, reader), rootObject);
+            processNested(new XMLExtendedStreamReaderImpl(this, reader), rootObject);
             while (reader.next() != END_DOCUMENT) {
             }
             reader.close();

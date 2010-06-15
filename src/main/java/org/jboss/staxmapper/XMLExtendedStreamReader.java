@@ -22,6 +22,8 @@
 
 package org.jboss.staxmapper;
 
+import java.util.List;
+
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
@@ -63,4 +65,72 @@ public interface XMLExtendedStreamReader extends XMLStreamReader {
      * @throws XMLStreamException if an error occurs.
      */
     void discardRemainder() throws XMLStreamException;
+
+    /**
+     * Get the value of an attribute as an integer.
+     *
+     * @param index the index of the attribute
+     * @return the integer value
+     * @throws XMLStreamException if an error occurs
+     */
+    int getIntAttributeValue(int index) throws XMLStreamException;
+
+    /**
+     * Get the value of an attribute as an integer list.
+     *
+     * @param index the index of the attribute
+     * @return the integer values
+     * @throws XMLStreamException if an error occurs
+     */
+    int[] getIntListAttributeValue(int index) throws XMLStreamException;
+
+    /**
+     * Get the value of an attribute as a space-delimited string list.
+     *
+     * @param index the index of the attribute
+     * @return the values
+     * @throws XMLStreamException if an error occurs
+     */
+    List<String> getListAttributeValue(int index) throws XMLStreamException;
+
+    /**
+     * Get the value of an attribute as a long.
+     *
+     * @param index the index of the attribute
+     * @return the long value
+     * @throws XMLStreamException if an error occurs
+     */
+    long getLongAttributeValue(int index) throws XMLStreamException;
+
+    /**
+     * Get the value of an attribute as a long integer list.
+     *
+     * @param index the index of the attribute
+     * @return the long values
+     * @throws XMLStreamException if an error occurs
+     */
+    long[] getLongListAttributeValue(int index) throws XMLStreamException;
+
+    /**
+     * Get the attribute value using intelligent type conversion.  Numeric types
+     * will be parsed; enum types will be mapped.
+     *
+     * @param index the index of the attribute
+     * @param kind the class of the expected object
+     * @param <T> the type of the expected object
+     * @return the object equivalent
+     * @throws XMLStreamException if an error occurs
+     */
+    <T> T getAttributeValue(int index, Class<T> kind) throws XMLStreamException;
+
+    /**
+     * Get the attribute value as a list using intelligent type conversion.  Numeric types
+     * will be parsed; enum types will be mapped.
+     *
+     * @param index the index of the attribute
+     * @param kind the class of the expected object
+     * @return the list of object equivalents
+     * @throws XMLStreamException if an error occurs
+     */
+    <T> List<? extends T> getListAttributeValue(int index, Class<T> kind) throws XMLStreamException;
 }

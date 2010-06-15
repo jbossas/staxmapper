@@ -38,14 +38,14 @@ import javax.xml.stream.XMLStreamReader;
 /**
  * @author <a href="mailto:david.lloyd@redhat.com">David M. Lloyd</a>
  */
-final class MappingReaderImpl implements XMLExtendedStreamReader {
+final class XMLExtendedStreamReaderImpl implements XMLExtendedStreamReader {
 
     private final XMLMapperImpl xmlMapper;
     private final XMLStreamReader streamReader;
     private final XMLStreamReader fixedStreamReader;
     private final Deque<Context> stack = new ArrayDeque<Context>();
 
-    MappingReaderImpl(final XMLMapperImpl xmlMapper, final XMLStreamReader streamReader) {
+    XMLExtendedStreamReaderImpl(final XMLMapperImpl xmlMapper, final XMLStreamReader streamReader) {
         this.xmlMapper = xmlMapper;
         this.streamReader = streamReader;
         fixedStreamReader = new FixedXMLStreamReader(this.streamReader);
