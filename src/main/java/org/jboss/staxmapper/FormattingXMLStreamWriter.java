@@ -22,7 +22,10 @@
 
 package org.jboss.staxmapper;
 
+import java.util.Iterator;
+
 import javax.xml.namespace.NamespaceContext;
+import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
@@ -31,19 +34,21 @@ import javax.xml.stream.XMLStreamWriter;
  *
  * @author <a href="mailto:david.lloyd@redhat.com">David M. Lloyd</a>
  */
-final class FormattingXMLStreamWriter implements XMLStreamWriter {
+final class FormattingXMLStreamWriter implements XMLStreamWriter, XMLStreamConstants {
     private final XMLStreamWriter delegate;
     private int level;
-    private boolean afterStart;
+    private int state = START_DOCUMENT;
+    private final StringBuilder buf = new StringBuilder();
 
     public FormattingXMLStreamWriter(final XMLStreamWriter delegate) {
         this.delegate = delegate;
     }
 
+    private void nl() throws XMLStreamException {
+        delegate.writeCharacters("\n");
+    }
+
     private void indent() throws XMLStreamException {
-        if (afterStart) {
-            delegate.writeCharacters("\n");
-        }
         int level = this.level;
         final XMLStreamWriter delegate = this.delegate;
         for (int i = 0; i < level; i ++) {
@@ -52,59 +57,68 @@ final class FormattingXMLStreamWriter implements XMLStreamWriter {
     }
 
     public void writeStartElement(final String localName) throws XMLStreamException {
+        nl();
         indent();
         delegate.writeStartElement(localName);
         level++;
-        afterStart = true;
+        state = START_ELEMENT;
     }
 
     public void writeStartElement(final String namespaceURI, final String localName) throws XMLStreamException {
+        nl();
         indent();
         delegate.writeStartElement(namespaceURI, localName);
         level++;
-        afterStart = true;
+        state = START_ELEMENT;
     }
 
     public void writeStartElement(final String prefix, final String localName, final String namespaceURI) throws XMLStreamException {
+        nl();
         indent();
         delegate.writeStartElement(prefix, namespaceURI, localName);
         level++;
-        afterStart = true;
+        state = START_ELEMENT;
     }
 
     public void writeEmptyElement(final String namespaceURI, final String localName) throws XMLStreamException {
+        nl();
         indent();
         delegate.writeEmptyElement(namespaceURI, localName);
         delegate.writeCharacters("\n");
     }
 
     public void writeEmptyElement(final String prefix, final String localName, final String namespaceURI) throws XMLStreamException {
+        nl();
         indent();
         delegate.writeEmptyElement(prefix, namespaceURI, localName);
         delegate.writeCharacters("\n");
     }
 
     public void writeEmptyElement(final String localName) throws XMLStreamException {
+        nl();
         indent();
         delegate.writeEmptyElement(localName);
         delegate.writeCharacters("\n");
     }
 
     public void writeEndElement() throws XMLStreamException {
-        if (! afterStart) {
+        level--;
+        if (state != START_ELEMENT) {
+            nl();
             indent();
         }
         delegate.writeEndElement();
-        level--;
-        delegate.writeCharacters("\n");
+        state = END_ELEMENT;
     }
 
     public void writeEndDocument() throws XMLStreamException {
         delegate.writeEndDocument();
+        state = END_DOCUMENT;
     }
 
     public void close() throws XMLStreamException {
         delegate.close();
+        state = END_DOCUMENT;
     }
 
     public void flush() throws XMLStreamException {
@@ -132,73 +146,114 @@ final class FormattingXMLStreamWriter implements XMLStreamWriter {
     }
 
     public void writeComment(final String data) throws XMLStreamException {
+        nl();
+        nl();
         indent();
         final StringBuilder b = new StringBuilder(data.length());
-        int s = 0;
-        int i = data.indexOf('\n') + 1;
-        if (i != 0) {
-            // Format multi-line comment
-            final int level = this.level;
-            do {
+        final Iterator<String> i = Spliterator.over(data, '\n');
+        if (! i.hasNext()) {
+            return;
+        } else {
+            final String first = i.next();
+            if (! i.hasNext()) {
+                delegate.writeComment(" " + first + " ");
+                state = COMMENT;
+                return;
+            } else {
                 b.append('\n');
-                for (int q = 0; q < level; q ++) {
+                for (int q = 0; q < level; q++) {
                     b.append("    ");
                 }
                 b.append("  ~ ");
-                b.append(data.substring(s, i - 1));
-                s = i;
-                i = data.indexOf('\n', s) + 1;
-            } while (i != 0);
-            for (int q = 0; q < level; q ++) {
-                b.append("      ");
+                b.append(first);
+                do {
+                    b.append('\n');
+                    for (int q = 0; q < level; q++) {
+                        b.append("    ");
+                    }
+                    b.append("  ~ ");
+                    b.append(i.next());
+                } while (i.hasNext());
             }
+            b.append('\n');
+            for (int q = 0; q < level; q ++) {
+                b.append("    ");
+            }
+            b.append("  ");
             delegate.writeComment(b.toString());
-        } else {
-            delegate.writeComment(" " + data + " ");
+            state = COMMENT;
         }
     }
 
     public void writeProcessingInstruction(final String target) throws XMLStreamException {
+        nl();
         indent();
         delegate.writeProcessingInstruction(target);
+        state = PROCESSING_INSTRUCTION;
     }
 
     public void writeProcessingInstruction(final String target, final String data) throws XMLStreamException {
+        nl();
         indent();
         delegate.writeProcessingInstruction(target, data);
+        state = PROCESSING_INSTRUCTION;
     }
 
     public void writeCData(final String data) throws XMLStreamException {
         delegate.writeCData(data);
+        state = CDATA;
     }
 
     public void writeDTD(final String dtd) throws XMLStreamException {
+        nl();
         indent();
         delegate.writeDTD(dtd);
+        state = DTD;
     }
 
     public void writeEntityRef(final String name) throws XMLStreamException {
+        delegate.writeEntityRef(name);
+        state = ENTITY_REFERENCE;
     }
 
     public void writeStartDocument() throws XMLStreamException {
         delegate.writeStartDocument();
-        delegate.writeCharacters("\n\n");
+        nl();
+        state = START_DOCUMENT;
     }
 
     public void writeStartDocument(final String version) throws XMLStreamException {
         delegate.writeStartDocument(version);
+        nl();
+        state = START_DOCUMENT;
     }
 
     public void writeStartDocument(final String encoding, final String version) throws XMLStreamException {
         delegate.writeStartDocument(encoding, version);
+        nl();
+        state = START_DOCUMENT;
     }
 
     public void writeCharacters(final String text) throws XMLStreamException {
-        delegate.writeCharacters(text);
+        if (state != CHARACTERS) {
+            nl();
+            indent();
+        }
+        final Iterator iterator = Spliterator.over(text, '\n');
+        while (iterator.hasNext()) {
+            final String t = (String) iterator.next();
+            delegate.writeCharacters(t);
+            if (iterator.hasNext()) {
+                nl();
+                indent();
+            }
+        }
+        state = CHARACTERS;
     }
 
     public void writeCharacters(final char[] text, final int start, final int len) throws XMLStreamException {
         delegate.writeCharacters(text, start, len);
+        state = CHARACTERS;
     }
 
     public String getPrefix(final String uri) throws XMLStreamException {

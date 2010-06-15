@@ -40,7 +40,7 @@ public final class SimpleWriteTest1 implements XMLContentWriter {
     }
 
     public void writeObject(final XMLStreamWriter streamWriter) throws XMLStreamException {
-        streamWriter.writeStartDocument();
+        streamWriter.writeStartDocument("UTF-8", "1.0");
         streamWriter.writeStartElement("hello");
         streamWriter.writeStartElement("hello-two");
         streamWriter.writeStartElement("helloblah");
@@ -51,7 +51,8 @@ public final class SimpleWriteTest1 implements XMLContentWriter {
         streamWriter.writeComment("this is a comment");
         streamWriter.writeComment("This is a comment\nthat spans multiple\nlines");
         streamWriter.writeEmptyElement("foo");
-        streamWriter.writeCharacters("Some characters");
+        streamWriter.writeCharacters("Some characters\n");
+        streamWriter.writeCharacters("Some multi-\nline\ncharacters");
         streamWriter.writeEndElement();
         streamWriter.writeEndDocument();
         streamWriter.close();
