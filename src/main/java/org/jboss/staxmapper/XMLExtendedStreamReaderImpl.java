@@ -398,6 +398,9 @@ final class XMLExtendedStreamReaderImpl implements XMLExtendedStreamReader {
         }
     }
 
+    public String getId() throws XMLStreamException {
+        return getAttributeValue(null, "id");
+    }
     // private members
 
     private static final class Context {

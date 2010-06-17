@@ -43,5 +43,5 @@ public interface XMLAttributeReader<T> {
      * @param value the value passed in
      * @throws javax.xml.stream.XMLStreamException if an error occurs
      */
-    void readObject(XMLStreamReader reader, int index, T value) throws XMLStreamException;
+    void readAttribute(XMLStreamReader reader, int index, T value) throws XMLStreamException;
 }

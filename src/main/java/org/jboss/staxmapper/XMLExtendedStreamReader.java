@@ -133,4 +133,12 @@ public interface XMLExtendedStreamReader extends XMLStreamReader {
      * @throws XMLStreamException if an error occurs
      */
     <T> List<? extends T> getListAttributeValue(int index, Class<T> kind) throws XMLStreamException;
+
+    /**
+     * Get the XML ID attribute, if any.
+     *
+     * @return the attribute value
+     * @throws XMLStreamException if an error occurs
+     */
+    String getId() throws XMLStreamException;
 }

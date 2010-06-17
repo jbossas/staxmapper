@@ -41,5 +41,5 @@ public interface XMLElementReader<T> {
      * @param value the value passed in
      * @throws XMLStreamException if an error occurs
      */
-    void readObject(XMLExtendedStreamReader reader, T value) throws XMLStreamException;
+    void readElement(XMLExtendedStreamReader reader, T value) throws XMLStreamException;
 }

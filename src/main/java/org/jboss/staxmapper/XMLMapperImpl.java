@@ -88,7 +88,7 @@ final class XMLMapperImpl implements XMLMapper {
         if (reader == null) {
             throw new XMLStreamException("Unexpected element '" + name + "'", streamReader.getLocation());
         }
-        reader.readObject(streamReader, value);
+        reader.readElement(streamReader, value);
     }
 
     @SuppressWarnings({ "unchecked" })
@@ -98,6 +98,6 @@ final class XMLMapperImpl implements XMLMapper {
         if (reader == null) {
             throw new XMLStreamException("Unexpected attribute '" + name + "'", streamReader.getLocation());
         }
-        reader.readObject(streamReader, index, value);
+        reader.readAttribute(streamReader, index, value);
     }
 }
