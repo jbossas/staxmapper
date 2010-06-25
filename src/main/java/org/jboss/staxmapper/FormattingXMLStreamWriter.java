@@ -83,21 +83,21 @@ final class FormattingXMLStreamWriter implements XMLStreamWriter, XMLStreamConst
         nl();
         indent();
         delegate.writeEmptyElement(namespaceURI, localName);
-        delegate.writeCharacters("\n");
+        state = END_ELEMENT;
     }
 
     public void writeEmptyElement(final String prefix, final String localName, final String namespaceURI) throws XMLStreamException {
         nl();
         indent();
         delegate.writeEmptyElement(prefix, namespaceURI, localName);
-        delegate.writeCharacters("\n");
+        state = END_ELEMENT;
     }
 
     public void writeEmptyElement(final String localName) throws XMLStreamException {
         nl();
         indent();
         delegate.writeEmptyElement(localName);
-        delegate.writeCharacters("\n");
+        state = END_ELEMENT;
     }
 
     public void writeEndElement() throws XMLStreamException {

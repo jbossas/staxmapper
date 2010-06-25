@@ -39,7 +39,7 @@ public final class SimpleWriteTest1 implements XMLContentWriter {
         System.out.println("Output: " + writer.getBuffer().toString());
     }
 
-    public void writeObject(final XMLStreamWriter streamWriter) throws XMLStreamException {
+    public void writeContent(final XMLStreamWriter streamWriter) throws XMLStreamException {
         streamWriter.writeStartDocument("UTF-8", "1.0");
         streamWriter.writeStartElement("hello");
         streamWriter.writeStartElement("hello-two");

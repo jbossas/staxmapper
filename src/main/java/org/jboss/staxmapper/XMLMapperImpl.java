@@ -78,7 +78,7 @@ final class XMLMapperImpl implements XMLMapper {
      */
     public void deparseDocument(XMLContentWriter contentWriter, XMLStreamWriter streamWriter) throws XMLStreamException {
         // todo: add validation based on the registered root elements?
-        contentWriter.writeObject(new FormattingXMLStreamWriter(streamWriter));
+        contentWriter.writeContent(new FormattingXMLStreamWriter(streamWriter));
     }
 
     @SuppressWarnings({ "unchecked" })
