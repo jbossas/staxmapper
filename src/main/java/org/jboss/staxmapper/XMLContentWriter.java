@@ -29,5 +29,5 @@ import javax.xml.stream.XMLStreamWriter;
  * @author <a href="mailto:david.lloyd@redhat.com">David M. Lloyd</a>
  */
 public interface XMLContentWriter {
-    void writeObject(XMLStreamWriter streamWriter) throws XMLStreamException;
+    void writeContent(XMLStreamWriter streamWriter) throws XMLStreamException;
 }
