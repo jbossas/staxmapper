@@ -109,6 +109,8 @@ final class XMLExtendedStreamReaderImpl implements XMLExtendedStreamReader {
             final int next = streamReader.next();
             if (next == END_ELEMENT) {
                 context.depth--;
+            } else if(next == START_ELEMENT) {
+                context.depth++;
             }
             return next;
         } else {
@@ -134,7 +136,9 @@ final class XMLExtendedStreamReaderImpl implements XMLExtendedStreamReader {
             final int next = streamReader.nextTag();
             if (next == END_ELEMENT) {
                 context.depth--;
-            }
+            } else if(next == START_ELEMENT) {
+                context.depth++;
+            }   
             return next;
         } else {
             try {
