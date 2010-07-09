@@ -1,6 +1,6 @@
 /*
  * JBoss, Home of Professional Open Source.
- * Copyright 2010, Red Hat Middleware LLC, and individual contributors
+ * Copyright 2010, Red Hat, Inc., and individual contributors
  * as indicated by the @author tags. See the copyright.txt file in the
  * distribution for a full listing of individual contributors.
  *
@@ -34,7 +34,7 @@ import javax.xml.stream.XMLStreamWriter;
  *
  * @author <a href="mailto:david.lloyd@redhat.com">David M. Lloyd</a>
  */
-final class FormattingXMLStreamWriter implements XMLStreamWriter, XMLStreamConstants {
+final class FormattingXMLStreamWriter implements XMLExtendedStreamWriter, XMLStreamConstants {
     private final XMLStreamWriter delegate;
     private int level;
     private int state = START_DOCUMENT;
@@ -134,6 +134,30 @@ final class FormattingXMLStreamWriter implements XMLStreamWriter, XMLStreamConst
 
     public void writeAttribute(final String namespaceURI, final String localName, final String value) throws XMLStreamException {
         delegate.writeAttribute(namespaceURI, localName, value);
+    }
+
+    public void writeAttribute(final String localName, final String[] values) throws XMLStreamException {
+        delegate.writeAttribute(localName, join(values));
+    }
+
+    public void writeAttribute(final String prefix, final String namespaceURI, final String localName, final String[] values) throws XMLStreamException {
+        delegate.writeAttribute(prefix, namespaceURI, localName, join(values));
+    }
+
+    public void writeAttribute(final String namespaceURI, final String localName, final String[] values) throws XMLStreamException {
+        delegate.writeAttribute(namespaceURI, localName, join(values));
+    }
+
+    public void writeAttribute(final String localName, final Iterable<String> values) throws XMLStreamException {
+        delegate.writeAttribute(localName, join(values));
+    }
+
+    public void writeAttribute(final String prefix, final String namespaceURI, final String localName, final Iterable<String> values) throws XMLStreamException {
+        delegate.writeAttribute(prefix, namespaceURI, localName, join(values));
+    }
+
+    public void writeAttribute(final String namespaceURI, final String localName, final Iterable<String> values) throws XMLStreamException {
+        delegate.writeAttribute(localName, join(values));
     }
 
     public void writeNamespace(final String prefix, final String namespaceURI) throws XMLStreamException {
@@ -277,5 +301,32 @@ final class FormattingXMLStreamWriter implements XMLStreamWriter, XMLStreamConst
 
     public Object getProperty(final String name) throws IllegalArgumentException {
         return delegate.getProperty(name);
+    }
+
+    private static String join(final String[] values) {
+        final StringBuilder b = new StringBuilder();
+        for (int i = 0, valuesLength = values.length; i < valuesLength; i++) {
+            final String s = values[i];
+            if (s != null) {
+                if (i > 0) {
+                    b.append(' ');
+                }
+                b.append(s);
+            }
+        }
+        return b.toString();
+    }
+
+    private static String join(final Iterable<String> values) {
+        final StringBuilder b = new StringBuilder();
+        Iterator<String> iterator = values.iterator();
+        while (iterator.hasNext()) {
+            final String s = iterator.next();
+            if (s != null) {
+                b.append(s);
+                if (iterator.hasNext()) b.append(' ');
+            }
+        }
+        return b.toString();
     }
 }

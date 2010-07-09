@@ -22,45 +22,29 @@
 
 package org.jboss.staxmapper;
 
-import java.util.Iterator;
-import java.util.NoSuchElementException;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 
 /**
  * @author <a href="mailto:david.lloyd@redhat.com">David M. Lloyd</a>
  */
-final class Spliterator implements Iterator<String> {
-    private final String subject;
-    private final char delimiter;
-    private int i;
+public interface XMLExtendedStreamWriter extends XMLStreamWriter {
 
-    Spliterator(final String subject, final char delimiter) {
-        this.subject = subject;
-        this.delimiter = delimiter;
-        i = 0;
-    }
+    void writeAttribute(String localName, String value) throws XMLStreamException;
 
-    static Spliterator over(String subject, char delimiter) {
-        return new Spliterator(subject, delimiter);
-    }
+    void writeAttribute(String prefix, String namespaceURI, String localName, String value) throws XMLStreamException;
 
-    public boolean hasNext() {
-        return i != -1;
-    }
+    void writeAttribute(String namespaceURI, String localName, String value) throws XMLStreamException;
 
-    public String next() {
-        final int i = this.i;
-        if (i == -1) {
-            throw new NoSuchElementException();
-        }
-        int n = subject.indexOf(delimiter, i);
-        try {
-            return n == -1 ? subject.substring(i) : subject.substring(i, n);
-        } finally {
-            this.i = n == -1 ? -1 : n + 1;
-        }
-    }
+    void writeAttribute(String localName, String[] values) throws XMLStreamException;
 
-    public void remove() {
-        throw new UnsupportedOperationException();
-    }
+    void writeAttribute(String prefix, String namespaceURI, String localName, String[] values) throws XMLStreamException;
+
+    void writeAttribute(String namespaceURI, String localName, String[] values) throws XMLStreamException;
+
+    void writeAttribute(String localName, Iterable<String> value) throws XMLStreamException;
+
+    void writeAttribute(String prefix, String namespaceURI, String localName, Iterable<String> value) throws XMLStreamException;
+
+    void writeAttribute(String namespaceURI, String localName, Iterable<String> value) throws XMLStreamException;
 }
