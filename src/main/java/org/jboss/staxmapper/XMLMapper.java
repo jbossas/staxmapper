@@ -25,6 +25,7 @@ package org.jboss.staxmapper;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
+import javax.xml.stream.XMLStreamWriter;
 
 /**
  * An XML mapper.  Allows the creation of extensible streaming XML parsers.
@@ -57,7 +58,16 @@ public interface XMLMapper {
      * @throws XMLStreamException if an error occurs
      */
     void parseDocument(Object rootObject, XMLStreamReader reader) throws XMLStreamException;
-
+    
+    /**
+     * Format the content writer's output on to an XML stream writer.
+     *
+     * @param contentWriter the content writer
+     * @param streamWriter the stream writer
+     * @throws XMLStreamException if an exception occurs
+     */
+    void deparseDocument(XMLContentWriter contentWriter, XMLStreamWriter streamWriter) throws XMLStreamException;
+    
     /**
      * A factory for creating an instance of {@link XMLMapper}.
      */

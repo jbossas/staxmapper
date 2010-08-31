@@ -34,7 +34,8 @@ public final class SimpleWriteTest1 implements XMLContentWriter {
 
     public static void main(String[] args) throws XMLStreamException {
         final StringWriter writer = new StringWriter(512);
-        new XMLMapperImpl().deparseDocument(new SimpleWriteTest1(), XMLOutputFactory.newInstance().createXMLStreamWriter(writer));
+        final XMLMapper mapper = XMLMapper.Factory.create();
+        mapper.deparseDocument(new SimpleWriteTest1(), XMLOutputFactory.newInstance().createXMLStreamWriter(writer));
         System.out.println("Output: " + writer.getBuffer().toString());
     }
 
