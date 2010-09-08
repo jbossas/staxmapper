@@ -141,4 +141,13 @@ public interface XMLExtendedStreamReader extends XMLStreamReader {
      * @throws XMLStreamException if an error occurs
      */
     String getId() throws XMLStreamException;
+    
+    /**
+     * Gets the {@link XMLMapper} used to handle 
+     * {@link #handleAttribute(Object, int) extended attributes} and
+     * {@link #handleAny(Object) xs:any-type nested elements}.
+     * 
+     * @return the XMLMapper. Will not return {@code null}
+     */
+    XMLMapper getXMLMapper();
 }
