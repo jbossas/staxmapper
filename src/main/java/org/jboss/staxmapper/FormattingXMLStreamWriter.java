@@ -262,7 +262,7 @@ final class FormattingXMLStreamWriter implements XMLExtendedStreamWriter, XMLStr
             nl();
             indent();
         }
-        final Iterator iterator = Spliterator.over(text, '\n');
+        final Iterator<String> iterator = Spliterator.over(text, '\n');
         while (iterator.hasNext()) {
             final String t = (String) iterator.next();
             delegate.writeCharacters(t);

@@ -138,7 +138,7 @@ final class XMLExtendedStreamReaderImpl implements XMLExtendedStreamReader {
                 context.depth--;
             } else if(next == START_ELEMENT) {
                 context.depth++;
-            }   
+            }
             return next;
         } else {
             try {
@@ -353,7 +353,9 @@ final class XMLExtendedStreamReaderImpl implements XMLExtendedStreamReader {
         } else if (kind == Long.class) {
             return kind.cast(Long.valueOf(getLongAttributeValue(index)));
         } else if (kind.isEnum()) {
-            return kind.cast(Enum.valueOf(kind.asSubclass(Enum.class), getAttributeValue(index)));
+            @SuppressWarnings({ "unchecked", "rawtypes" })
+            T value = (T) Enum.valueOf((Class<Enum>) kind, getAttributeValue(index));
+            return value;
         } else if (kind == char[].class) {
             return kind.cast(getAttributeValue(index).toCharArray());
         } else {
@@ -405,11 +407,11 @@ final class XMLExtendedStreamReaderImpl implements XMLExtendedStreamReader {
     public String getId() throws XMLStreamException {
         return getAttributeValue(null, "id");
     }
-    
+
     public XMLMapper getXMLMapper() {
         return xmlMapper;
     }
-    
+
     // private members
 
     private static final class Context {
