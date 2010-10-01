@@ -33,7 +33,6 @@ import javax.xml.stream.XMLStreamReader;
  * @author <a href="mailto:david.lloyd@redhat.com">David M. Lloyd</a>
  */
 public interface XMLExtendedStreamReader extends XMLStreamReader {
-
     /**
      * Handle an {@code <xs:any>}-type nested element, passing in the given value, returning after the end of the element.
      * Must be positioned on a {@code START_ELEMENT} or an exception will occur.  On return the cursor will be positioned
@@ -141,13 +140,21 @@ public interface XMLExtendedStreamReader extends XMLStreamReader {
      * @throws XMLStreamException if an error occurs
      */
     String getId() throws XMLStreamException;
-    
+
     /**
-     * Gets the {@link XMLMapper} used to handle 
+     * Gets the {@link XMLMapper} used to handle
      * {@link #handleAttribute(Object, int) extended attributes} and
      * {@link #handleAny(Object) xs:any-type nested elements}.
-     * 
+     *
      * @return the XMLMapper. Will not return {@code null}
      */
     XMLMapper getXMLMapper();
+
+    /**
+     * Whether or not {@link #getElementText} should trim content.
+     * The default is true.
+     *
+     * @param trim trim if true, don't if false
+     */
+    void setTrimElementText(boolean trim);
 }

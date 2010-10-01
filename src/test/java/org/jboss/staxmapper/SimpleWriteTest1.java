@@ -42,12 +42,26 @@ public final class SimpleWriteTest1 implements XMLContentWriter {
     public void writeContent(final XMLExtendedStreamWriter streamWriter) throws XMLStreamException {
         streamWriter.writeStartDocument("UTF-8", "1.0");
         streamWriter.writeStartElement("hello");
+        streamWriter.writeNamespace("foo", "http://foo");
+        streamWriter.writeNamespace("bar", "http://bar");
+        streamWriter.writeAttribute("test", "this out");
+        streamWriter.setUnspecifiedElementNamespace("http://foo");
         streamWriter.writeStartElement("hello-two");
+        streamWriter.writeAttribute("test2", "this out2");
         streamWriter.writeStartElement("helloblah");
+        streamWriter.setUnspecifiedElementNamespace("http://bar");
+        streamWriter.writeAttribute("test3", "this out3");
+        streamWriter.writeCharacters(" test ");
         streamWriter.writeStartElement("helloblah2");
+        streamWriter.writeAttribute("test4", "this out4");
         streamWriter.writeEndElement();
         streamWriter.writeEndElement();
+        streamWriter.writeStartElement("inner");
         streamWriter.writeEndElement();
+        streamWriter.writeEndElement();
+
+        streamWriter.setUnspecifiedElementNamespace(null);
+
         streamWriter.writeComment("this is a comment");
         streamWriter.writeComment("This is a comment\nthat spans multiple\nlines");
         streamWriter.writeEmptyElement("foo");

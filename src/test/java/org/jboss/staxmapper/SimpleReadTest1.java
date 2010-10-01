@@ -22,13 +22,18 @@
 
 package org.jboss.staxmapper;
 
+import static javax.xml.stream.XMLStreamConstants.COMMENT;
+import static javax.xml.stream.XMLStreamConstants.END_ELEMENT;
+import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
+
 import java.io.StringReader;
 
+import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
-
-import static javax.xml.stream.XMLStreamConstants.*;
+import javax.xml.stream.XMLStreamReader;
 
 /**
  * @author <a href="mailto:david.lloyd@redhat.com">David M. Lloyd</a>
@@ -44,9 +49,12 @@ public final class SimpleReadTest1 implements XMLElementReader<Object> {
                 "    <root xmlns=\"urn:test:one\"/>\n" +
                 "    <root xmlns=\"urn:test:one\"/>\n" +
                 "    <root xmlns=\"urn:test:one\"/>\n" +
+                "    <test>    blah blah blah    </test>" +
+                "    <test>    blah1 blah1 blah1    </test>" +
                 "</root>\n\n"
         )));
     }
+
 
     public void readElement(final XMLExtendedStreamReader reader, final Object value) throws XMLStreamException {
         System.out.println("Got my element at " + reader.getLocation());
@@ -58,6 +66,11 @@ public final class SimpleReadTest1 implements XMLElementReader<Object> {
                 case END_ELEMENT:
                     return;
                 case START_ELEMENT:
+                    if ("test".equals(reader.getLocalName())) {
+                        System.out.println("Element text: [" + reader.getElementText() + "]");
+                        reader.setTrimElementText(false);
+                        break;
+                    }
                     reader.handleAny(value);
                     break;
             }

@@ -44,12 +44,17 @@ final class XMLExtendedStreamReaderImpl implements XMLExtendedStreamReader {
     private final XMLStreamReader streamReader;
     private final XMLStreamReader fixedStreamReader;
     private final Deque<Context> stack = new ArrayDeque<Context>();
+    private boolean trimElementText = true;
 
     XMLExtendedStreamReaderImpl(final XMLMapperImpl xmlMapper, final XMLStreamReader streamReader) {
         this.xmlMapper = xmlMapper;
         this.streamReader = streamReader;
         fixedStreamReader = new FixedXMLStreamReader(this.streamReader);
         stack.push(new Context());
+    }
+
+    public void setTrimElementText(boolean trim) {
+        this.trimElementText = trim;
     }
 
     public void handleAny(final Object value) throws XMLStreamException {
@@ -127,7 +132,8 @@ final class XMLExtendedStreamReaderImpl implements XMLExtendedStreamReader {
     }
 
     public String getElementText() throws XMLStreamException {
-        return streamReader.getElementText();
+        String text = streamReader.getElementText();
+        return trimElementText ? text.trim() : text;
     }
 
     public int nextTag() throws XMLStreamException {
