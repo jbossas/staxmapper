@@ -1,6 +1,6 @@
 /*
  * JBoss, Home of Professional Open Source.
- * Copyright 2010, Red Hat, Inc., and individual contributors
+ * Copyright 2011, Red Hat, Inc., and individual contributors
  * as indicated by the @author tags. See the copyright.txt file in the
  * distribution for a full listing of individual contributors.
  *
@@ -25,18 +25,21 @@ package org.jboss.staxmapper;
 import javax.xml.stream.XMLStreamException;
 
 /**
- * A writer for some XML content.
+ * A writer for XML elements.
+ *
+ * @param <T> the type that this writer can operate on
  *
  * @author <a href="mailto:david.lloyd@redhat.com">David M. Lloyd</a>
  */
-@Deprecated
-public interface XMLContentWriter {
+public interface XMLElementWriter<T> {
 
     /**
      * Write the contents of this item.
      *
      * @param streamWriter the stream writer
+     * @param value the value passed in
      * @throws XMLStreamException if an exception occurs
      */
-    void writeContent(XMLExtendedStreamWriter streamWriter) throws XMLStreamException;
+    void writeContent(XMLExtendedStreamWriter streamWriter, T value) throws XMLStreamException;
+
 }

@@ -58,7 +58,17 @@ public interface XMLMapper {
      * @throws XMLStreamException if an error occurs
      */
     void parseDocument(Object rootObject, XMLStreamReader reader) throws XMLStreamException;
-    
+
+    /**
+     * Format the element writer's output on to an XML stream writer.
+     *
+     * @param writer the element writer
+     * @param rootObject the root object to send in
+     * @param streamWriter the stream writer
+     * @throws XMLStreamException if an exception occurs
+     */
+    void deparseDocument(XMLElementWriter<?> writer, Object rootObject, XMLStreamWriter streamWriter) throws XMLStreamException;
+
     /**
      * Format the content writer's output on to an XML stream writer.
      *
@@ -66,6 +76,7 @@ public interface XMLMapper {
      * @param streamWriter the stream writer
      * @throws XMLStreamException if an exception occurs
      */
+    @Deprecated
     void deparseDocument(XMLContentWriter contentWriter, XMLStreamWriter streamWriter) throws XMLStreamException;
     
     /**

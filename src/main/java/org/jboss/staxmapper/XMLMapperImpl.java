@@ -69,6 +69,15 @@ final class XMLMapperImpl implements XMLMapper {
         }
     }
 
+    public void deparseDocument(final XMLElementWriter<?> writer, final Object rootObject, final XMLStreamWriter streamWriter) throws XMLStreamException {
+        doDeparse(writer, rootObject, new FormattingXMLStreamWriter(streamWriter));
+    }
+
+    @SuppressWarnings( { "unchecked" })
+    private <T> void doDeparse(XMLElementWriter<?> writer, final T value, final XMLExtendedStreamWriter streamWriter) throws XMLStreamException {
+        ((XMLElementWriter<T>)writer).writeContent(streamWriter, value);
+    }
+
     /**
      * Format the content writer's output on to an XML stream writer.
      *
