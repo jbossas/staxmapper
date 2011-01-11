@@ -181,6 +181,7 @@ final class FormattingXMLStreamWriter implements XMLExtendedStreamWriter, XMLStr
     public void writeEndElement() throws XMLStreamException {
         level--;
         if (state != START_ELEMENT) {
+            runAttrQueue();
             nl();
             indent();
             delegate.writeEndElement();
