@@ -437,6 +437,7 @@ final class FormattingXMLStreamWriter implements XMLExtendedStreamWriter, XMLStr
     }
 
     public void setDefaultNamespace(final String uri) throws XMLStreamException {
+        runAttrQueue();
         delegate.setDefaultNamespace(uri);
     }
 
