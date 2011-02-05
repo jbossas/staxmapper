@@ -53,10 +53,12 @@ final class XMLExtendedStreamReaderImpl implements XMLExtendedStreamReader {
         stack.push(new Context());
     }
 
+    @Override
     public void setTrimElementText(boolean trim) {
         this.trimElementText = trim;
     }
 
+    @Override
     public void handleAny(final Object value) throws XMLStreamException {
         require(START_ELEMENT, null, null);
         boolean ok = false;
@@ -68,6 +70,7 @@ final class XMLExtendedStreamReaderImpl implements XMLExtendedStreamReader {
             } finally {
                 stack.pop();
             }
+            ok = true;
         } finally {
             if (! ok) {
                 safeClose();
@@ -75,6 +78,7 @@ final class XMLExtendedStreamReaderImpl implements XMLExtendedStreamReader {
         }
     }
 
+    @Override
     public void handleAttribute(final Object value, final int index) throws XMLStreamException {
         require(START_ELEMENT, null, null);
         boolean ok = false;
@@ -87,6 +91,7 @@ final class XMLExtendedStreamReaderImpl implements XMLExtendedStreamReader {
         }
     }
 
+    @Override
     public void discardRemainder() throws XMLStreamException {
         final Context context = stack.getFirst();
         if (context.depth > 0) {
@@ -104,10 +109,12 @@ final class XMLExtendedStreamReaderImpl implements XMLExtendedStreamReader {
         }
     }
 
+    @Override
     public Object getProperty(final String name) throws IllegalArgumentException {
         return streamReader.getProperty(name);
     }
 
+    @Override
     public int next() throws XMLStreamException {
         final Context context = stack.getFirst();
         if (context.depth > 0) {
@@ -127,15 +134,18 @@ final class XMLExtendedStreamReaderImpl implements XMLExtendedStreamReader {
         }
     }
 
+    @Override
     public void require(final int type, final String namespaceURI, final String localName) throws XMLStreamException {
         streamReader.require(type, namespaceURI, localName);
     }
 
+    @Override
     public String getElementText() throws XMLStreamException {
         String text = streamReader.getElementText();
         return trimElementText ? text.trim() : text;
     }
 
+    @Override
     public int nextTag() throws XMLStreamException {
         final Context context = stack.getFirst();
         if (context.depth > 0) {
@@ -155,166 +165,207 @@ final class XMLExtendedStreamReaderImpl implements XMLExtendedStreamReader {
         }
     }
 
+    @Override
     public boolean hasNext() throws XMLStreamException {
         return stack.getFirst().depth > 0 && streamReader.hasNext();
     }
 
+    @Override
     public void close() throws XMLStreamException {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public String getNamespaceURI(final String prefix) {
         return streamReader.getNamespaceURI(prefix);
     }
 
+    @Override
     public boolean isStartElement() {
         return streamReader.isStartElement();
     }
 
+    @Override
     public boolean isEndElement() {
         return streamReader.isEndElement();
     }
 
+    @Override
     public boolean isCharacters() {
         return streamReader.isCharacters();
     }
 
+    @Override
     public boolean isWhiteSpace() {
         return streamReader.isWhiteSpace();
     }
 
+    @Override
     public String getAttributeValue(final String namespaceURI, final String localName) {
         return streamReader.getAttributeValue(namespaceURI, localName);
     }
 
+    @Override
     public int getAttributeCount() {
         return streamReader.getAttributeCount();
     }
 
+    @Override
     public QName getAttributeName(final int index) {
         return streamReader.getAttributeName(index);
     }
 
+    @Override
     public String getAttributeNamespace(final int index) {
         return streamReader.getAttributeNamespace(index);
     }
 
+    @Override
     public String getAttributeLocalName(final int index) {
         return streamReader.getAttributeLocalName(index);
     }
 
+    @Override
     public String getAttributePrefix(final int index) {
         return streamReader.getAttributePrefix(index);
     }
 
+    @Override
     public String getAttributeType(final int index) {
         return streamReader.getAttributeType(index);
     }
 
+    @Override
     public String getAttributeValue(final int index) {
         return streamReader.getAttributeValue(index);
     }
 
+    @Override
     public boolean isAttributeSpecified(final int index) {
         return streamReader.isAttributeSpecified(index);
     }
 
+    @Override
     public int getNamespaceCount() {
         return streamReader.getNamespaceCount();
     }
 
+    @Override
     public String getNamespacePrefix(final int index) {
         return streamReader.getNamespacePrefix(index);
     }
 
+    @Override
     public String getNamespaceURI(final int index) {
         return streamReader.getNamespaceURI(index);
     }
 
+    @Override
     public NamespaceContext getNamespaceContext() {
         return streamReader.getNamespaceContext();
     }
 
+    @Override
     public int getEventType() {
         return streamReader.getEventType();
     }
 
+    @Override
     public String getText() {
         return streamReader.getText();
     }
 
+    @Override
     public char[] getTextCharacters() {
         return streamReader.getTextCharacters();
     }
 
+    @Override
     public int getTextCharacters(final int sourceStart, final char[] target, final int targetStart, final int length) throws XMLStreamException {
         return streamReader.getTextCharacters(sourceStart, target, targetStart, length);
     }
 
+    @Override
     public int getTextStart() {
         return streamReader.getTextStart();
     }
 
+    @Override
     public int getTextLength() {
         return streamReader.getTextLength();
     }
 
+    @Override
     public String getEncoding() {
         return streamReader.getEncoding();
     }
 
+    @Override
     public boolean hasText() {
         return streamReader.hasText();
     }
 
+    @Override
     public Location getLocation() {
         return streamReader.getLocation();
     }
 
+    @Override
     public QName getName() {
         return streamReader.getName();
     }
 
+    @Override
     public String getLocalName() {
         return streamReader.getLocalName();
     }
 
+    @Override
     public boolean hasName() {
         return streamReader.hasName();
     }
 
+    @Override
     public String getNamespaceURI() {
         return streamReader.getNamespaceURI();
     }
 
+    @Override
     public String getPrefix() {
         return streamReader.getPrefix();
     }
 
+    @Override
     public String getVersion() {
         return streamReader.getVersion();
     }
 
+    @Override
     public boolean isStandalone() {
         return streamReader.isStandalone();
     }
 
+    @Override
     public boolean standaloneSet() {
         return streamReader.standaloneSet();
     }
 
+    @Override
     public String getCharacterEncodingScheme() {
         return streamReader.getCharacterEncodingScheme();
     }
 
+    @Override
     public String getPITarget() {
         return streamReader.getPITarget();
     }
 
+    @Override
     public String getPIData() {
         return streamReader.getPIData();
     }
 
+    @Override
     public int getIntAttributeValue(final int index) throws XMLStreamException {
         try {
             return Integer.parseInt(getAttributeValue(index));
@@ -323,6 +374,7 @@ final class XMLExtendedStreamReaderImpl implements XMLExtendedStreamReader {
         }
     }
 
+    @Override
     public int[] getIntListAttributeValue(final int index) throws XMLStreamException {
         try {
             return toInts(Spliterator.over(getAttributeValue(index), ' '), 0);
@@ -331,10 +383,12 @@ final class XMLExtendedStreamReaderImpl implements XMLExtendedStreamReader {
         }
     }
 
+    @Override
     public List<String> getListAttributeValue(final int index) throws XMLStreamException {
         return Arrays.asList(toStrings(Spliterator.over(getAttributeValue(index), ' '), 0));
     }
 
+    @Override
     public long getLongAttributeValue(final int index) throws XMLStreamException {
         try {
             return Long.parseLong(getAttributeValue(index));
@@ -343,6 +397,7 @@ final class XMLExtendedStreamReaderImpl implements XMLExtendedStreamReader {
         }
     }
 
+    @Override
     public long[] getLongListAttributeValue(final int index) throws XMLStreamException {
         try {
             return toLongs(Spliterator.over(getAttributeValue(index), ' '), 0);
@@ -351,6 +406,7 @@ final class XMLExtendedStreamReaderImpl implements XMLExtendedStreamReader {
         }
     }
 
+    @Override
     public <T> T getAttributeValue(final int index, final Class<T> kind) throws XMLStreamException {
         if (kind == String.class || kind == Object.class) {
             return kind.cast(getAttributeValue(index));
@@ -369,6 +425,7 @@ final class XMLExtendedStreamReaderImpl implements XMLExtendedStreamReader {
         }
     }
 
+    @Override
     @SuppressWarnings({ "unchecked" })
     public <T> List<? extends T> getListAttributeValue(final int index, final Class<T> kind) throws XMLStreamException {
         if (kind == String.class || kind == Object.class) {
@@ -410,10 +467,12 @@ final class XMLExtendedStreamReaderImpl implements XMLExtendedStreamReader {
         }
     }
 
+    @Override
     public String getId() throws XMLStreamException {
         return getAttributeValue(null, "id");
     }
 
+    @Override
     public XMLMapper getXMLMapper() {
         return xmlMapper;
     }
