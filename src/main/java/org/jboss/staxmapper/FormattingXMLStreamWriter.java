@@ -42,6 +42,7 @@ final class FormattingXMLStreamWriter implements XMLExtendedStreamWriter, XMLStr
     private final ArrayDeque<ArgRunnable> attrQueue = new ArrayDeque<ArgRunnable>();
     private int level;
     private int state = START_DOCUMENT;
+    private boolean indentEndElement = false;
     private ArrayDeque<String> unspecifiedNamespaces = new ArrayDeque<String>();
 
 
@@ -106,6 +107,7 @@ final class FormattingXMLStreamWriter implements XMLExtendedStreamWriter, XMLStr
 
         level++;
         state = START_ELEMENT;
+        indentEndElement = false;
     }
 
     public void writeStartElement(final String namespaceURI, final String localName) throws XMLStreamException {
@@ -126,6 +128,7 @@ final class FormattingXMLStreamWriter implements XMLExtendedStreamWriter, XMLStr
         });
         level++;
         state = START_ELEMENT;
+        indentEndElement = false;
     }
 
     public void writeStartElement(final String prefix, final String localName, final String namespaceURI) throws XMLStreamException {
@@ -146,6 +149,7 @@ final class FormattingXMLStreamWriter implements XMLExtendedStreamWriter, XMLStr
         });
         level++;
         state = START_ELEMENT;
+        indentEndElement = false;
     }
 
     public void writeEmptyElement(final String namespaceURI, final String localName) throws XMLStreamException {
@@ -182,8 +186,11 @@ final class FormattingXMLStreamWriter implements XMLExtendedStreamWriter, XMLStr
         level--;
         if (state != START_ELEMENT) {
             runAttrQueue();
-            nl();
-            indent();
+            if (state != CHARACTERS || indentEndElement) {
+                nl();
+                indent();
+                indentEndElement = false;
+            }
             delegate.writeEndElement();
         } else {
             // Change the start element to an empty element
@@ -412,7 +419,7 @@ final class FormattingXMLStreamWriter implements XMLExtendedStreamWriter, XMLStr
         }
         final Iterator<String> iterator = Spliterator.over(text, '\n');
         while (iterator.hasNext()) {
-            final String t = (String) iterator.next();
+            final String t = iterator.next();
             delegate.writeCharacters(t);
             if (iterator.hasNext()) {
                 nl();
@@ -420,6 +427,7 @@ final class FormattingXMLStreamWriter implements XMLExtendedStreamWriter, XMLStr
             }
         }
         state = CHARACTERS;
+        indentEndElement = true;
     }
 
     public void writeCharacters(final char[] text, final int start, final int len) throws XMLStreamException {
