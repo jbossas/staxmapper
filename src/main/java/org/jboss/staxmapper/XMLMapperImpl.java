@@ -45,10 +45,20 @@ final class XMLMapperImpl implements XMLMapper {
         }
     }
 
+    @Override
+    public void unregisterRootElement(QName name) {
+        rootElements.remove(name);
+    }
+
     public void registerRootAttribute(QName name, XMLAttributeReader<?> reader) {
         if (rootAttributes.putIfAbsent(name, reader) != null) {
             throw new IllegalArgumentException("Root attribute for " + name + " already registered");
         }
+    }
+
+    @Override
+    public void unregisterRootAttribute(QName name) {
+        rootAttributes.remove(name);
     }
 
     public void parseDocument(Object rootObject, XMLStreamReader reader) throws XMLStreamException {

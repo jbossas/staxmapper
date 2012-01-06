@@ -43,12 +43,26 @@ public interface XMLMapper {
     void registerRootElement(QName name, XMLElementReader<?> reader);
 
     /**
+     * Removes a {@link #registerRootElement(QName, XMLElementReader) previously registered root element}.
+     *
+     * @param name the element name
+     */
+    void unregisterRootElement(QName name);
+
+    /**
      * Add a known root attribute which can be read by {@link XMLExtendedStreamReader#handleAttribute(Object, int)}.
      *
      * @param name the attribute name
      * @param reader the reader which handles the attribute
      */
     void registerRootAttribute(QName name, XMLAttributeReader<?> reader);
+
+    /**
+     * Removes a {@link #registerRootAttribute(QName, XMLAttributeReader) previously registered root attribute}.
+     *
+     * @param name the element name
+     */
+    void unregisterRootAttribute(QName name);
 
     /**
      * Parse a document.  The document must have a known, registered root element which can accept the given root object.
@@ -78,7 +92,7 @@ public interface XMLMapper {
      */
     @Deprecated
     void deparseDocument(XMLContentWriter contentWriter, XMLStreamWriter streamWriter) throws XMLStreamException;
-    
+
     /**
      * A factory for creating an instance of {@link XMLMapper}.
      */
