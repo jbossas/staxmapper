@@ -26,6 +26,7 @@ import java.io.StringWriter;
 
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
+import org.junit.Test;
 
 /**
  * @author <a href="mailto:david.lloyd@redhat.com">David M. Lloyd</a>
@@ -33,9 +34,14 @@ import javax.xml.stream.XMLStreamException;
 public final class SimpleWriteTest1 implements XMLContentWriter {
 
     public static void main(String[] args) throws XMLStreamException {
+        new SimpleWriteTest1().testWriteContent();
+    }
+
+    @Test
+    public void testWriteContent() throws XMLStreamException {
         final StringWriter writer = new StringWriter(512);
         final XMLMapper mapper = XMLMapper.Factory.create();
-        mapper.deparseDocument(new SimpleWriteTest1(), XMLOutputFactory.newInstance().createXMLStreamWriter(writer));
+        mapper.deparseDocument(this, XMLOutputFactory.newInstance().createXMLStreamWriter(writer));
         System.out.println("Output: " + writer.getBuffer().toString());
     }
 
@@ -58,6 +64,10 @@ public final class SimpleWriteTest1 implements XMLContentWriter {
         streamWriter.writeEndElement();
         streamWriter.writeStartElement("inner");
         streamWriter.writeEndElement();
+        streamWriter.writeEndElement();
+
+        streamWriter.writeStartElement("actually-empty");
+        streamWriter.setDefaultNamespace("http://blah");
         streamWriter.writeEndElement();
 
         streamWriter.setUnspecifiedElementNamespace(null);

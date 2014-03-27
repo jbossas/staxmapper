@@ -195,9 +195,13 @@ final class FormattingXMLStreamWriter implements XMLExtendedStreamWriter, XMLStr
         } else {
             // Change the start element to an empty element
             ArgRunnable start = attrQueue.poll();
-            start.run(1);
-            // Write everything else
-            runAttrQueue();
+            if (start == null) {
+                delegate.writeEndElement();
+            } else {
+                start.run(1);
+                // Write everything else
+                runAttrQueue();
+            }
         }
 
         unspecifiedNamespaces.pop();

@@ -28,12 +28,10 @@ import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
 
 import java.io.StringReader;
 
-import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
+import org.junit.Test;
 
 /**
  * @author <a href="mailto:david.lloyd@redhat.com">David M. Lloyd</a>
@@ -41,8 +39,13 @@ import javax.xml.stream.XMLStreamReader;
 public final class SimpleReadTest1 implements XMLElementReader<Object> {
 
     public static void main(String[] args) throws XMLStreamException {
+        new SimpleReadTest1().testReadContent();
+    }
+
+    @Test
+    public void testReadContent() throws XMLStreamException {
         final XMLMapper mapper = XMLMapper.Factory.create();
-        mapper.registerRootElement(new QName("urn:test:one", "root"), new SimpleReadTest1());
+        mapper.registerRootElement(new QName("urn:test:one", "root"), this);
         mapper.parseDocument(Boolean.TRUE, XMLInputFactory.newInstance().createXMLStreamReader(new StringReader(
                 "<root xmlns=\"urn:test:one\">\n" +
                 "    <!-- Comment! -->\n" +
@@ -54,7 +57,6 @@ public final class SimpleReadTest1 implements XMLElementReader<Object> {
                 "</root>\n\n"
         )));
     }
-
 
     public void readElement(final XMLExtendedStreamReader reader, final Object value) throws XMLStreamException {
         System.out.println("Got my element at " + reader.getLocation());
