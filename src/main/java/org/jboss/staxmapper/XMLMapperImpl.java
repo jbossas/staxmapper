@@ -22,26 +22,33 @@
 
 package org.jboss.staxmapper;
 
+import static javax.xml.stream.XMLStreamConstants.END_DOCUMENT;
+import static javax.xml.stream.XMLStreamConstants.START_DOCUMENT;
+import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
+
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-
+import java.util.function.Supplier;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 
-import static javax.xml.stream.XMLStreamConstants.*;
-
 /**
  * @author <a href="mailto:david.lloyd@redhat.com">David M. Lloyd</a>
  */
 final class XMLMapperImpl implements XMLMapper {
-    private final ConcurrentMap<QName, XMLElementReader<?>> rootElements = new ConcurrentHashMap<QName, XMLElementReader<?>>();
-    private final ConcurrentMap<QName, XMLAttributeReader<?>> rootAttributes = new ConcurrentHashMap<QName, XMLAttributeReader<?>>();
+    private final ConcurrentMap<QName, XMLElementReader<?>> rootElements = new ConcurrentHashMap<>();
+    private final ConcurrentMap<QName, Supplier<? extends XMLElementReader<?>>> rootElementsProvider = new ConcurrentHashMap<>();
+    private final ConcurrentMap<QName, XMLAttributeReader<?>> rootAttributes = new ConcurrentHashMap<>();
 
-    public void registerRootElement(QName name, XMLElementReader<?> reader) {
-        if (rootElements.putIfAbsent(name, reader) != null) {
-            throw new IllegalArgumentException("Root element for " + name + " already registered");
+    public <T> void registerRootElement(QName name, XMLElementReader<T> reader) {
+        registerRootElement(name, () -> reader);
+    }
+
+    public <T> void registerRootElement(QName name, Supplier<XMLElementReader<T>> supplier) {
+        if (rootElementsProvider.putIfAbsent(name, supplier) != null) {
+            throw new IllegalArgumentException("Root element supplier for " + name + " already registered");
         }
     }
 
@@ -70,6 +77,7 @@ final class XMLMapperImpl implements XMLMapper {
             while (reader.next() != END_DOCUMENT) {
             }
             reader.close();
+            rootElements.clear(); //clear the parsers cache
         } finally {
             try {
                 reader.close();
@@ -100,10 +108,14 @@ final class XMLMapperImpl implements XMLMapper {
         contentWriter.writeContent(new FormattingXMLStreamWriter(streamWriter));
     }
 
-    @SuppressWarnings({ "unchecked" })
+    private XMLElementReader<?> getParser(final QName name) {
+        return rootElements.computeIfAbsent(name, qName -> rootElementsProvider.get(name).get());
+    }
+
+    @SuppressWarnings({"unchecked"})
     <T> void processNested(final XMLExtendedStreamReader streamReader, final T value) throws XMLStreamException {
         final QName name = streamReader.getName();
-        final XMLElementReader<T> reader = (XMLElementReader<T>) rootElements.get(name);
+        final XMLElementReader<T> reader = (XMLElementReader<T>) getParser(name);
         if (reader == null) {
             throw new XMLStreamException("Unexpected element '" + name + "'", streamReader.getLocation());
         }
