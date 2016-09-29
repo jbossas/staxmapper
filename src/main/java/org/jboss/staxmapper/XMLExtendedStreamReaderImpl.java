@@ -451,9 +451,9 @@ final class XMLExtendedStreamReaderImpl implements XMLExtendedStreamReader {
                 throw intParseException(e, getLocation());
             }
         } else if (kind.isEnum()) {
-            final List<T> list = new ArrayList<T>();
+            final List<T> list = new ArrayList<>();
             for (String s : Spliterable.over(getAttributeValue(index), ' ')) {
-                list.add(kind.cast(Enum.valueOf(kind.asSubclass(Enum.class), s)));
+                list.add((T) kind.cast(Enum.valueOf(kind.asSubclass(Enum.class), s)));
             }
             return list;
         } else if (kind == char[].class) {
