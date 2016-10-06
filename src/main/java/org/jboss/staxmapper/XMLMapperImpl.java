@@ -39,7 +39,7 @@ import javax.xml.stream.XMLStreamWriter;
  */
 final class XMLMapperImpl implements XMLMapper {
     private final ConcurrentMap<QName, XMLElementReader<?>> rootElements = new ConcurrentHashMap<>();
-    private final ConcurrentMap<QName, Supplier<? extends XMLElementReader<?>>> rootElementsProvider = new ConcurrentHashMap<>();
+    private final ConcurrentMap<QName, Supplier<? extends XMLElementReader<?>>> rootElementsSuppliers = new ConcurrentHashMap<>();
     private final ConcurrentMap<QName, XMLAttributeReader<?>> rootAttributes = new ConcurrentHashMap<>();
 
     public <T> void registerRootElement(QName name, XMLElementReader<T> reader) {
@@ -47,7 +47,7 @@ final class XMLMapperImpl implements XMLMapper {
     }
 
     public <T> void registerRootElement(QName name, Supplier<XMLElementReader<T>> supplier) {
-        if (rootElementsProvider.putIfAbsent(name, supplier) != null) {
+        if (rootElementsSuppliers.putIfAbsent(name, supplier) != null) {
             throw new IllegalArgumentException("Root element supplier for " + name + " already registered");
         }
     }
@@ -109,7 +109,7 @@ final class XMLMapperImpl implements XMLMapper {
     }
 
     private XMLElementReader<?> getParser(final QName name) {
-        return rootElements.computeIfAbsent(name, qName -> rootElementsProvider.get(name).get());
+        return rootElements.computeIfAbsent(name, qName -> rootElementsSuppliers.getOrDefault(name, () -> null).get());
     }
 
     @SuppressWarnings({"unchecked"})
