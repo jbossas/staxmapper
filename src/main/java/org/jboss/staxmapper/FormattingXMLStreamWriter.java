@@ -64,7 +64,7 @@ public final class FormattingXMLStreamWriter implements XMLExtendedStreamWriter,
     }
 
     private interface ArgRunnable {
-        public void run(int arg) throws XMLStreamException;
+        void run(int arg) throws XMLStreamException;
     }
 
     @Override

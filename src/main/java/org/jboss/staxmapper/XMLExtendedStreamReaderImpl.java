@@ -43,7 +43,7 @@ final class XMLExtendedStreamReaderImpl implements XMLExtendedStreamReader {
     private final XMLMapperImpl xmlMapper;
     private final XMLStreamReader streamReader;
     private final XMLStreamReader fixedStreamReader;
-    private final Deque<Context> stack = new ArrayDeque<Context>();
+    private final Deque<Context> stack = new ArrayDeque<>();
     private boolean trimElementText = true;
 
     XMLExtendedStreamReaderImpl(final XMLMapperImpl xmlMapper, final XMLStreamReader streamReader) {
@@ -85,7 +85,7 @@ final class XMLExtendedStreamReaderImpl implements XMLExtendedStreamReader {
         try {
             xmlMapper.processAttribute(fixedStreamReader, index, value);
         } finally {
-            if (! ok) {
+            if (!ok) {
                 safeClose();
             }
         }
@@ -451,9 +451,10 @@ final class XMLExtendedStreamReaderImpl implements XMLExtendedStreamReader {
                 throw intParseException(e, getLocation());
             }
         } else if (kind.isEnum()) {
-            final List<T> list = new ArrayList<T>();
+            final List<T> list = new ArrayList<>();
             for (String s : Spliterable.over(getAttributeValue(index), ' ')) {
-                list.add(kind.cast(Enum.valueOf(kind.asSubclass(Enum.class), s)));
+                Enum<?> en =  Enum.valueOf(kind.asSubclass(Enum.class), s);
+                list.add(kind.cast(en));
             }
             return list;
         } else if (kind == char[].class) {

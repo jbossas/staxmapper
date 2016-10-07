@@ -22,6 +22,7 @@
 
 package org.jboss.staxmapper;
 
+import java.util.function.Supplier;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
@@ -40,7 +41,21 @@ public interface XMLMapper {
      * @param name the element name
      * @param reader the reader which handles the element
      */
-    void registerRootElement(QName name, XMLElementReader<?> reader);
+    <T> void registerRootElement(QName name, XMLElementReader<T> reader);
+
+    /**
+     * Add a known root element which can be read by {@link XMLExtendedStreamReader#handleAny(Object)}.
+     *
+     * @param name the element name
+     * @param supplier provider for the reader which handles the element
+     *
+     * It is recommended that supplier always creates new instance of the {@link XMLElementReader}
+     * instead of caching and returning always same instance. This way unused parsers can get GC-ed
+     * when not needed.
+     *
+     */
+    <T> void registerRootElement(QName name, Supplier<XMLElementReader<T>> supplier);
+
 
     /**
      * Removes a {@link #registerRootElement(QName, XMLElementReader) previously registered root element}.
