@@ -346,7 +346,6 @@ public final class FormattingXMLStreamWriter implements XMLExtendedStreamWriter,
     public void writeComment(final String data) throws XMLStreamException {
         runAttrQueue();
         nl();
-        nl();
         indent();
         final StringBuilder b = new StringBuilder(data.length());
         final Iterator<String> i = Spliterator.over(data, '\n');
@@ -427,21 +426,18 @@ public final class FormattingXMLStreamWriter implements XMLExtendedStreamWriter,
     @Override
     public void writeStartDocument() throws XMLStreamException {
         delegate.writeStartDocument();
-        nl();
         state = START_DOCUMENT;
     }
 
     @Override
     public void writeStartDocument(final String version) throws XMLStreamException {
         delegate.writeStartDocument(version);
-        nl();
         state = START_DOCUMENT;
     }
 
     @Override
     public void writeStartDocument(final String encoding, final String version) throws XMLStreamException {
         delegate.writeStartDocument(encoding, version);
-        nl();
         state = START_DOCUMENT;
     }
 
