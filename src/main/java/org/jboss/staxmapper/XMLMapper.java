@@ -38,6 +38,7 @@ public interface XMLMapper {
     /**
      * Add a known root element which can be read by {@link XMLExtendedStreamReader#handleAny(Object)}.
      *
+     * @param <T> the type of the expected object
      * @param name the element name
      * @param reader the reader which handles the element
      */
@@ -46,6 +47,7 @@ public interface XMLMapper {
     /**
      * Add a known root element which can be read by {@link XMLExtendedStreamReader#handleAny(Object)}.
      *
+     * @param <T> the type of the expected object
      * @param name the element name
      * @param supplier provider for the reader which handles the element
      *

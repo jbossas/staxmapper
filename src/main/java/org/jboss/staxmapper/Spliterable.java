@@ -40,6 +40,7 @@ final class Spliterable implements Iterable<String> {
         return new Spliterable(subject, delimiter);
     }
 
+    @Override
     public Iterator<String> iterator() {
         return new Spliterator(subject, delimiter);
     }

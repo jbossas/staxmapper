@@ -42,10 +42,12 @@ final class XMLMapperImpl implements XMLMapper {
     private final ConcurrentMap<QName, Supplier<? extends XMLElementReader<?>>> rootElementsSuppliers = new ConcurrentHashMap<>();
     private final ConcurrentMap<QName, XMLAttributeReader<?>> rootAttributes = new ConcurrentHashMap<>();
 
+    @Override
     public <T> void registerRootElement(QName name, XMLElementReader<T> reader) {
         registerRootElement(name, () -> reader);
     }
 
+    @Override
     public <T> void registerRootElement(QName name, Supplier<XMLElementReader<T>> supplier) {
         if (rootElementsSuppliers.putIfAbsent(name, supplier) != null) {
             throw new IllegalArgumentException("Root element supplier for " + name + " already registered");
@@ -57,6 +59,7 @@ final class XMLMapperImpl implements XMLMapper {
         rootElements.remove(name);
     }
 
+    @Override
     public void registerRootAttribute(QName name, XMLAttributeReader<?> reader) {
         if (rootAttributes.putIfAbsent(name, reader) != null) {
             throw new IllegalArgumentException("Root attribute for " + name + " already registered");
@@ -68,6 +71,7 @@ final class XMLMapperImpl implements XMLMapper {
         rootAttributes.remove(name);
     }
 
+    @Override
     public void parseDocument(Object rootObject, XMLStreamReader reader) throws XMLStreamException {
         try {
             reader.require(START_DOCUMENT, null, null);
@@ -87,6 +91,7 @@ final class XMLMapperImpl implements XMLMapper {
         }
     }
 
+    @Override
     public void deparseDocument(final XMLElementWriter<?> writer, final Object rootObject, final XMLStreamWriter streamWriter) throws XMLStreamException {
         doDeparse(writer, rootObject, new FormattingXMLStreamWriter(streamWriter));
     }
@@ -103,6 +108,8 @@ final class XMLMapperImpl implements XMLMapper {
      * @param streamWriter the stream writer
      * @throws XMLStreamException if an exception occurs
      */
+    @Override
+    @SuppressWarnings( "deprecation" )
     public void deparseDocument(XMLContentWriter contentWriter, XMLStreamWriter streamWriter) throws XMLStreamException {
         // todo: add validation based on the registered root elements?
         contentWriter.writeContent(new FormattingXMLStreamWriter(streamWriter));

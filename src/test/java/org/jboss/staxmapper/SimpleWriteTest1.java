@@ -31,6 +31,7 @@ import org.junit.Test;
 /**
  * @author <a href="mailto:david.lloyd@redhat.com">David M. Lloyd</a>
  */
+@SuppressWarnings( "deprecation" )
 public final class SimpleWriteTest1 implements XMLContentWriter {
 
     public static void main(String[] args) throws XMLStreamException {
@@ -45,6 +46,7 @@ public final class SimpleWriteTest1 implements XMLContentWriter {
         System.out.println("Output: " + writer.getBuffer().toString());
     }
 
+    @Override
     public void writeContent(final XMLExtendedStreamWriter streamWriter) throws XMLStreamException {
         streamWriter.writeStartDocument("UTF-8", "1.0");
         streamWriter.writeStartElement("hello");

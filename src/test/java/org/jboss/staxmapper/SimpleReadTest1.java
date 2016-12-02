@@ -58,6 +58,7 @@ public final class SimpleReadTest1 implements XMLElementReader<Object> {
         )));
     }
 
+    @Override
     public void readElement(final XMLExtendedStreamReader reader, final Object value) throws XMLStreamException {
         System.out.println("Got my element at " + reader.getLocation());
         while (reader.hasNext()) {

@@ -45,6 +45,7 @@ public final class SimpleWriteTest2 implements XMLElementWriter<Object> {
         System.out.println("Output: " + writer.getBuffer().toString());
     }
 
+    @Override
     public void writeContent(final XMLExtendedStreamWriter streamWriter, final Object object) throws XMLStreamException {
         streamWriter.writeStartDocument("UTF-8", "1.0");
         streamWriter.writeStartElement("hello");

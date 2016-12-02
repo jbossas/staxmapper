@@ -431,7 +431,7 @@ final class XMLExtendedStreamReaderImpl implements XMLExtendedStreamReader {
         if (kind == String.class || kind == Object.class) {
             return (List<? extends T>) getListAttributeValue(index);
         } else if (kind == Integer.class || kind == Number.class) {
-            final List<T> list = new ArrayList<T>();
+            final List<T> list = new ArrayList<>();
             try {
                 for (String s : Spliterable.over(getAttributeValue(index), ' ')) {
                     list.add(kind.cast(Integer.valueOf(s)));
@@ -441,7 +441,7 @@ final class XMLExtendedStreamReaderImpl implements XMLExtendedStreamReader {
                 throw intParseException(e, getLocation());
             }
         } else if (kind == Long.class) {
-            final List<T> list = new ArrayList<T>();
+            final List<T> list = new ArrayList<>();
             try {
                 for (String s : Spliterable.over(getAttributeValue(index), ' ')) {
                     list.add(kind.cast(Long.valueOf(s)));
@@ -458,7 +458,7 @@ final class XMLExtendedStreamReaderImpl implements XMLExtendedStreamReader {
             }
             return list;
         } else if (kind == char[].class) {
-            final List<T> list = new ArrayList<T>();
+            final List<T> list = new ArrayList<>();
             for (String s : Spliterable.over(getAttributeValue(index), ' ')) {
                 list.add(kind.cast(s.toCharArray()));
             }

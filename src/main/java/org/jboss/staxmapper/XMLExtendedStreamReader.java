@@ -126,6 +126,7 @@ public interface XMLExtendedStreamReader extends XMLStreamReader {
      * Get the attribute value as a list using intelligent type conversion.  Numeric types
      * will be parsed; enum types will be mapped.
      *
+     * @param <T> the type of the expected object
      * @param index the index of the attribute
      * @param kind the class of the expected object
      * @return the list of object equivalents

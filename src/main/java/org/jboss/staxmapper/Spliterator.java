@@ -43,10 +43,12 @@ final class Spliterator implements Iterator<String> {
         return new Spliterator(subject, delimiter);
     }
 
+    @Override
     public boolean hasNext() {
         return i != -1;
     }
 
+    @Override
     public String next() {
         final int i = this.i;
         if (i == -1) {
@@ -60,6 +62,7 @@ final class Spliterator implements Iterator<String> {
         }
     }
 
+    @Override
     public void remove() {
         throw new UnsupportedOperationException();
     }
