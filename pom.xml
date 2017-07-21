@@ -36,6 +36,14 @@
 
     <name>StAX Mapper</name>
 
+    <licenses>
+        <license>
+            <name>GNU Lesser General Public License v2.1 only</name>
+            <url>http://repository.jboss.org/licenses/lgpl-2.1.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
