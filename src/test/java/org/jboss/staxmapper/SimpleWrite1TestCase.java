@@ -31,10 +31,10 @@ import org.junit.Test;
 /**
  * @author <a href="mailto:david.lloyd@redhat.com">David M. Lloyd</a>
  */
-public final class SimpleWriteTest1 implements XMLContentWriter {
+public final class SimpleWrite1TestCase implements XMLContentWriter {
 
     public static void main(String[] args) throws XMLStreamException {
-        new SimpleWriteTest1().testWriteContent();
+        new SimpleWrite1TestCase().testWriteContent();
     }
 
     @Test
