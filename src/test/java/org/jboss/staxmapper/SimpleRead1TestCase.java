@@ -36,10 +36,10 @@ import org.junit.Test;
 /**
  * @author <a href="mailto:david.lloyd@redhat.com">David M. Lloyd</a>
  */
-public final class SimpleReadTest1 implements XMLElementReader<Object> {
+public final class SimpleRead1TestCase implements XMLElementReader<Object> {
 
     public static void main(String[] args) throws XMLStreamException {
-        new SimpleReadTest1().testReadContent();
+        new SimpleRead1TestCase().testReadContent();
     }
 
     @Test
