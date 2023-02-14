@@ -22,6 +22,8 @@
 
 package org.jboss.staxmapper;
 
+import java.util.Comparator;
+
 /**
  * A versioned object.
  * @author Paul Ferraro
@@ -37,11 +39,19 @@ public interface Versioned<V extends Comparable<V>, T extends Versioned<V, T>> {
     V getVersion();
 
     /**
+     * Returns the {@link Comparator} used by {@link #since(Versioned)}.
+     * @return a version comparator
+     */
+    default Comparator<V> getComparator() {
+        return Comparator.naturalOrder();
+    }
+
+    /**
      * Indicates whether the version of this object is greater than or equal to the version of the specified versioned object.
      * @param object a versioned object
      * @return true, if the version of this object is greater than or equal to the version of the specified versioned object, false otherwise.
      */
     default boolean since(T object) {
-        return this.getVersion().compareTo(object.getVersion()) >= 0;
+        return this.getComparator().compare(this.getVersion(), object.getVersion()) >= 0;
     }
 }
