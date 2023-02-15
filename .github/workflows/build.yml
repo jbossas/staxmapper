@@ -1,0 +1,25 @@
+name: SmallRye Module Info Build
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: build with JDK 11
+
+    steps:
+      - uses: actions/checkout@v2
+        name: checkout
+
+      - uses: AdoptOpenJDK/install-jdk@v1
+        name: set up JDK 11
+        with:
+          version: 11
+
+      - name: Build
+        run: mvn -B install --file pom.xml
