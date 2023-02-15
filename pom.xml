@@ -70,7 +70,7 @@
                         <dependency>
                             <groupId>org.wildfly.checkstyle</groupId>
                             <artifactId>wildfly-checkstyle-config</artifactId>
-                            <version>1.0.5.Final</version>
+                            <version>1.0.8.Final</version>
                         </dependency>
                     </dependencies>
                     <executions>
