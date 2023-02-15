@@ -22,6 +22,8 @@
 
 package org.jboss.staxmapper;
 
+import java.util.Set;
+import java.util.function.Function;
 import java.util.function.Supplier;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
@@ -56,6 +58,19 @@ public interface XMLMapper {
      */
     <T> void registerRootElement(QName name, Supplier<XMLElementReader<T>> supplier);
 
+    /**
+     * Convenience method that registers a root element associated with a known set of namespaces, whose reader can be created from the specified factory.
+     * @param <T> the operating type of the reader
+     * @param <N> the namespace type
+     * @param localName the local name of the known root element
+     * @param namespaces a set of known namespaces for the specified the root element
+     * @param factory a factory for creating an element reader for the specified the root element
+     */
+    default <T, N extends Namespace> void registerRootElement(String localName, Set<N> namespaces, Function<N, XMLElementReader<T>> readerFactory) {
+        for (N namespace : namespaces) {
+            this.registerRootElement(new QName(namespace.getUri(), localName), () -> readerFactory.apply(namespace));
+        }
+    }
 
     /**
      * Removes a {@link #registerRootElement(QName, XMLElementReader) previously registered root element}.
