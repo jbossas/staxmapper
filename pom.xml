@@ -93,4 +93,58 @@
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>coverage</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.jacoco</groupId>
+                        <artifactId>jacoco-maven-plugin</artifactId>
+                        <version>0.8.10</version>
+                        <executions>
+                            <execution>
+                                <id>prepare-agent</id>
+                                <goals>
+                                    <goal>prepare-agent</goal>
+                                </goals>
+                                <phase>generate-test-resources</phase>
+                            </execution>
+                           <execution>
+                               <id>report</id>
+                               <phase>prepare-package</phase>
+                               <goals>
+                                   <goal>report</goal>
+                               </goals>
+                           </execution>
+                           <execution>
+                               <id>merge</id>
+                               <goals>
+                                   <goal>merge</goal>
+                               </goals>
+                               <configuration>
+                                   <fileSets>
+                                       <fileSet implementation="org.apache.maven.shared.model.fileset.FileSet">
+                                           <directory>.</directory>
+                                           <includes>
+                                               <include>**/*.exec</include>
+                                           </includes>
+                                       </fileSet>
+                                   </fileSets>
+                               </configuration>
+                           </execution>
+                           <execution>
+                               <id>aggregate-report</id>
+                               <phase>verify</phase>
+                               <goals>
+                                   <goal>report-aggregate</goal>
+                               </goals>
+                           </execution>
+                       </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
