@@ -17,9 +17,7 @@
  ~ limitations under the License.
  -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.jboss</groupId>
@@ -28,7 +26,7 @@
     </parent>
     <groupId>org.jboss</groupId>
     <artifactId>staxmapper</artifactId>
-    <version>1.5.0.Beta1-SNAPSHOT</version>
+    <version>1.5.0.Final</version>
 
     <name>StAX Mapper</name>
 
@@ -44,7 +42,7 @@
         <connection>scm:git:git@github.com:jbossas/staxmapper.git</connection>
         <developerConnection>scm:git:git@github.com:jbossas/staxmapper.git</developerConnection>
         <url>https://github.com/jbossas/staxmapper</url>
-        <tag>HEAD</tag>
+        <tag>1.5.0.Final</tag>
     </scm>
 
     <dependencies>
@@ -67,7 +65,7 @@
                         <consoleOutput>true</consoleOutput>
                         <failsOnError>true</failsOnError>
                         <includeTestSourceDirectory>true</includeTestSourceDirectory>
-                        <useFile/>
+                        <useFile />
                     </configuration>
                     <dependencies>
                         <dependency>
