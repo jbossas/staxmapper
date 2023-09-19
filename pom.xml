@@ -40,6 +40,13 @@
         </license>
     </licenses>
 
+    <scm>
+        <connection>scm:git:git@github.com:jbossas/staxmapper.git</connection>
+        <developerConnection>scm:git:git@github.com:jbossas/staxmapper.git</developerConnection>
+        <url>https://github.com/jbossas/staxmapper</url>
+        <tag>HEAD</tag>
+    </scm>
+
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
